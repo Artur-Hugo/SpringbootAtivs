@@ -16,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import br.com.devoliga.Repository.UsuarioRepository;
 import br.com.devoliga.model.Usuario;
 import br.com.devoliga.model.UsuarioLogin;
+import br.com.devoliga.service.exception.ObjectNotFoundException;
 
 
 @Service
@@ -57,7 +58,7 @@ public class UsuarioService {
 	}
 
 	public Optional<Usuario> atualizarUsuario(Usuario usuario) {
-
+		try {
 		if (usuarioRepository.findByUsuario(usuario.getUsuario()).isPresent()) {
 
 			int idade = Period.between(usuario.getDataNascimento(), LocalDate.now()).getYears();
@@ -69,10 +70,13 @@ public class UsuarioService {
 
 			return Optional.of(usuarioRepository.save(usuario));
 
+			
 		} else {
 
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "O Usuário não encontrado!", null);
+			throw new ObjectNotFoundException("Não é possível mudar o nome do usuario");
 
+		}}catch(org.springframework.dao.DataIntegrityViolationException e) {
+			throw new ObjectNotFoundException("Esse usuario já existe e não é possivel mudar o nome usuario");
 		}
 
 	}

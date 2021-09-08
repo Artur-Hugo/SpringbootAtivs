@@ -26,6 +26,7 @@ public class Usuario {
 	private String nome;
 	
 	@NotNull
+	@Column(unique = true)
 	@Size(min = 5, max = 100)
 	private String usuario;
 	
