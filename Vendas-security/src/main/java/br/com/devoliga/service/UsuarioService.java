@@ -59,7 +59,7 @@ public class UsuarioService {
 
 	public Optional<Usuario> atualizarUsuario(Usuario usuario) {
 		try {
-		if (usuarioRepository.findByUsuario(usuario.getUsuario()).isPresent()) {
+		if (usuarioRepository.findByUsuario(usuario.getUsuario()) != null) {
 
 			int idade = Period.between(usuario.getDataNascimento(), LocalDate.now()).getYears();
 
